@@ -1,0 +1,87 @@
+print('''Программа создана в рамках курса: "Полный Курс Python 3: от Новичка до Мастера"
+Разработчик: Daniel Astaptscev
+
+Добро пожаловать в компьютерную игру для 2-х игроков: "xO"!
+
+В ней - вам и вашему оппоненту предлагается собрать 3 символа подряд в таблице представленной ниже,
+чтобы победить:
+ _________________
+|  1  |  2  |  3  |
+|-----|-----|-----|
+|  4  |  5  |  6  |
+|-----|-----|-----|
+|  7  |  8  |  9  |
+ ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾''')
+print('Если это не удаётся, то объявляется ничья.\nЧтобы поставить символ в таблицу, вам необходимо выбрать номер '
+      'ячейки - в которую вы хотите его поставить.')
+print('\nСимвол игрока 1: X,\nСимвол игрока 2: O.\n\nИгра начинается!\n')
+
+
+def playing_field(matrix):
+    'Вывод визуального игрового поля'
+    print('\nИгровое поле:')
+    print(' ' + '_'*17 + ' ')
+    print(f'|  {matrix[1]}  |  {matrix[2]}  |  {matrix[3]}  |')
+    print('|-----|-----|-----|')
+    print(f'|  {matrix[4]}  |  {matrix[5]}  |  {matrix[6]}  |')
+    print('|-----|-----|-----|')
+    print(f'|  {matrix[7]}  |  {matrix[8]}  |  {matrix[9]}  |')
+    print(' ' + '‾'*17 + ' ')
+
+
+def turn_player(matrix, i):
+    'Ввод и добавление символа на игровое поле'
+    while True:
+        if i % 2 == 0:
+            enter = int(input('Первый игрок, выберите цифру ячейки - куда хотите поставить ваш символ: '))
+            if matrix.get(enter) == ' ':
+                matrix[enter] = 'X'
+                return matrix
+            else:
+                print('\nПохоже, выбранная ячейка уже занята\n')
+        else:
+            enter = int(input('Второй игрок, выберите цифру ячейки - куда хотите поставить ваш символ: '))
+            if matrix.get(enter) == ' ':
+                matrix[enter] = 'O'
+                return matrix
+            else:
+                print('\nПохоже, выбранная ячейка уже занята\n')
+
+
+def check_for_victory(matrix):
+    'Проверка на выполнение победных условий'
+    if matrix[1] == matrix[2] == matrix[3] and matrix[1] != ' ':
+        victory_text(matrix[1])
+    elif matrix[4] == matrix[5] == matrix[6] and matrix[4] != ' ':
+        victory_text(matrix[4])
+    elif matrix[7] == matrix[8] == matrix[9] and matrix[7] != ' ':
+        victory_text(matrix[7])
+    elif matrix[1] == matrix[5] == matrix[9] and matrix[1] != ' ':
+        victory_text(matrix[1])
+    elif matrix[3] == matrix[5] == matrix[7] and matrix[3] != ' ':
+        victory_text(matrix[3])
+    elif matrix[1] == matrix[4] == matrix[7] and matrix[1] != ' ':
+        victory_text(matrix[1])
+    elif matrix[2] == matrix[5] == matrix[8] and matrix[2] != ' ':
+        victory_text(matrix[2])
+    elif matrix[3] == matrix[6] == matrix[9] and matrix[3] != ' ':
+        victory_text(matrix[6])
+
+
+def victory_text(symbol):
+    'Вывод победного текста и окончание игры'
+    print('Победил Первый игрок!' if symbol == 'X' else 'Победил Второй игрок!')
+    print('\nИгрк окончена...')
+    exit(0)
+
+
+matrix = {1: ' ', 2: ' ', 3: ' ', 4: ' ', 5: ' ', 6: ' ', 7: ' ', 8: ' ', 9: ' '}
+
+for i in range(9):
+    turn_player(matrix, i)
+    playing_field(matrix)
+    check_for_victory(matrix)
+    if i == 8:
+        print('Объявляется ничья!')
+        print('\nИгрк окончена...')
+        exit(0)
